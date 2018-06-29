@@ -9,12 +9,17 @@
 #include "DirectedVertexAspect.h"
 #include "WeightedGraphAspect.h"
 #include "WeightedVertexAspect.h"
+#include "AdjacencyListVertex.h"
+#include "SimpleVertexAspect.h"
 
 typedef graphpp::AdjacencyListVertex Vertex;
 typedef graphpp::AdjacencyListGraph<Vertex> Graph;
+typedef graphpp::SimpleVertexAspect<Vertex> SimpleVertex;
+typedef graphpp::AdjacencyListGraph<SimpleVertex> SimpleGraph;
 typedef graphpp::WeightedVertexAspect<Vertex> WeightedVertex;
 typedef graphpp::WeightedGraphAspect<WeightedVertex, graphpp::AdjacencyListGraph<WeightedVertex>>
     WeightedGraph;
 typedef graphpp::DirectedVertexAspect<Vertex> DirectedVertex;
 typedef graphpp::DirectedGraphAspect<DirectedVertex, graphpp::AdjacencyListGraph<DirectedVertex>>
     DirectedGraph;
+

@@ -6,6 +6,7 @@
 
 #include <set>
 #include "mili/mili.h"
+#include "IVertex.h"
 
 namespace graphpp
 {
@@ -19,10 +20,10 @@ class AdjacencyListVertex
 public:
     using VertexId = unsigned int;
     using Degree = unsigned int;
-
     using VertexContainer = std::vector<AdjacencyListVertex*>;
     using VerticesConstIterator = CAutonomousIterator<VertexContainer>;
     using VerticesIterator = AutonomousIterator<VertexContainer>;
+
 
     AdjacencyListVertex(VertexId id) : vertexId(id), visited(false) {}
 

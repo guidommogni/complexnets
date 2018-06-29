@@ -2,10 +2,11 @@
 
 #include "AdjacencyListVertex.h"
 
+
 namespace graphpp
 {
 template <class T>
-class DirectedVertexAspect : public T
+class DirectedVertexAspect : public T, public IVertex
 {
 public:
     typedef AdjacencyListVertex::Degree Degree;
@@ -13,19 +14,24 @@ public:
     typedef AdjacencyListVertex::VertexContainer VertexContainer;
     typedef AdjacencyListVertex::VerticesConstIterator VerticesConstIterator;
     typedef AdjacencyListVertex::VerticesIterator VerticesIterator;
+    typedef std::list<VertexId> NeighborsId;
+    typedef CAutonomousIterator<NeighborsId> IdsIterator;
 
-    DirectedVertexAspect(VertexId id) : T(id) {}
+    DirectedVertexAspect(VertexId id) : T(id), vertexId(id) {}
 
     void addEdge(DirectedVertexAspect<T>* other)
     {
         T::template addEdge<DirectedVertexAspect<T>>(other);
         insert_into(outNeighbors, other);
+        outIds.push_back(other->getVertexId());
         other->addIncomingEdge(this);
     }
 
     void addIncomingEdge(DirectedVertexAspect<T>* other)
     {
         insert_into(inNeighbors, other);
+        inIds.push_back(other->getVertexId());
+
     }
 
     void removeEdge(DirectedVertexAspect<T>* v)
@@ -76,8 +82,47 @@ public:
         return VerticesIterator(outNeighbors);
     }
 
+    IdsIterator getInNeighborsIds() const
+    {
+        IdsIterator iter(inIds);
+        return iter;
+    }
+
+    IdsIterator getOutNeighborsIds() const
+    {
+        IdsIterator iter(outIds);
+        return iter;
+    }
+
+    IdsIterator getNeighborsIdsConstIterator(ShellIndexType type)
+    {
+        if (type == InDegre) {
+            return getInNeighborsIds();
+        } else {
+            return getOutNeighborsIds();
+        }
+    }
+
+    double getDegree(ShellIndexType type)
+    {
+        if (type == InDegre) {
+            return inNeighbors.size();
+        } else {
+            return outNeighbors.size();
+        }
+    }
+
+    VertexId getVertexId() const
+    {
+        return vertexId;
+    }
+
 private:
     VertexContainer inNeighbors;
     VertexContainer outNeighbors;
+    NeighborsId inIds;
+    NeighborsId outIds;
+    VertexId vertexId;
+
 };
 }  // namespace graphpp

@@ -168,7 +168,7 @@ set(LIB_MILI
   ${LIB_MILI_DIR}/random_gen.h
   )
 
-set(LIBS_ALL ${LIB_MILI})
+set(LIBS_ALL ${LIB_MILI} src/core/inc/IVertex.h src/core/inc/SimpleVertexAspect.h)
 
 # Build an executable target called `complexnets`
 add_executable(complexnets src/main.cpp ${CORE_ALL} ${GUI_ALL} ${CMD_ALL} ${LIBS_ALL} ${UI_HEADERS})
