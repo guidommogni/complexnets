@@ -20,8 +20,10 @@ enum ShellIndexType {
             ShellIndexTypeWeightedEqualStrength
 };
 
-namespace graphpp {
-    class IVertex {
+namespace graphpp
+{
+    class IVertex
+    {
     public:
         using VertexId = unsigned int;
         typedef std::list<VertexId> NeighborsId;
