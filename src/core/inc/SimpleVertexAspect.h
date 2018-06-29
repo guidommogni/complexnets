@@ -7,6 +7,7 @@
 
 #include "AdjacencyListVertex.h"
 
+
 namespace graphpp
 {
     template <class T>
