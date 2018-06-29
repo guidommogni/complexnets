@@ -5,16 +5,19 @@
 #include "ShellIndexSimpleNode.h"
 #include "IVertex.h"
 #include "typedefs.h"
+#include "ShellIndexDirectedNode.h"
+#include "ShellIndexWeightedNode.h"
 
 namespace graphpp {
 
-    template<class Graph, class IVertex>
-    class ShellIndex : public IShellIndex<Graph, IVertex> {
+    template<class Graph>
+    class ShellIndex : public IShellIndex<Graph> {
     public:
-        typedef typename IShellIndex<Graph, IVertex>::ShellIndexContainer ShellIndexContainer;
-        typedef typename IShellIndex<Graph, IVertex>::ShellIndexIterator ShellIndexIterator;
+        typedef typename IShellIndex<Graph>::ShellIndexContainer ShellIndexContainer;
+        typedef typename IShellIndex<Graph>::ShellIndexIterator ShellIndexIterator;
 
         ShellIndex(Graph &g, ShellIndexType type) {
+            currentType = type;
             totalVertexes = initMap(g);
             initMultimapSet(g);
             calculateShellIndex();
@@ -55,13 +58,12 @@ namespace graphpp {
                 nodesByVertexId[v->getVertexId()]->markAsRemove();
                 nodesByCurrentDegree[degree].remove(nextVertex);
 
-                NeighbourConstIterator neighborsIt = v->neighborsConstIterator();
+                IVertex::IdsIterator neighborsIt = v->getNeighborsIdsConstIterator(currentType);
                 // Iterate through each of it's neighbors to reduce their degree by 1, since v was
                 // removed.
                 while (!neighborsIt.end()) {
-                    Vertex *neigh = *neighborsIt;
                     // Get the vertex node to be able to lower it one level in the structure
-                    INode *neighNode = nodesByVertexId[neigh->getVertexId()];
+                    INode *neighNode = nodesByVertexId[*neighborsIt];
 
                     if (neighNode->getDegree() > 0) {
                         // Remove it from the current level
@@ -104,11 +106,24 @@ namespace graphpp {
 
             // initialize all elements using the vertex id and the vertex degree
             while (!it.end()) {
-                IVertex *v = *it;
-                INode *newNode = new SimpleNode(v, ShellIndexTypeSimple);
+                Vertex *v = *it;
+                INode *newNode = getNodeFromType(v, currentType);
                 nodesByVertexId[v->getVertexId()] = newNode;
                 nodesByCurrentDegree[newNode->getDegree()].push_back(newNode);
                 ++it;
+            }
+        }
+
+        INode* getNodeFromType(Vertex *v, ShellIndexType type){
+            switch (type){
+                case ShellIndexTypeSimple:
+                    return new SimpleNode(v, type);
+                case ShellIndexTypeInDegree:
+                case ShellIndexTypeOutDegree:
+                    return new DirectedNode(v, type);
+                case ShellIndexTypeWeightedEqualPopulation:
+                case ShellIndexTypeWeightedEqualStrength:
+                    return new WeightedNode(v, type);
             }
         }
 

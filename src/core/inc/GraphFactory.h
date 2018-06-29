@@ -38,9 +38,9 @@ public:
     {
         return new NearestNeighborsDegree<Graph, Vertex>();
     }
-    virtual IShellIndex<Graph, Vertex>* createShellIndex(Graph& g, ShellIndexType type)
+    virtual IShellIndex<Graph>* createShellIndex(Graph& g, ShellIndexType type)
     {
-        return new ShellIndex<Graph, Vertex>(g, type);
+        return new ShellIndex<Graph>(g, type);
     }
 
     virtual IDegreeDistribution<Graph, Vertex>* createDegreeDistribution(Graph& g)
