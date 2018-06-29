@@ -9,15 +9,15 @@
 
 enum ShellIndexType {
     // For an graph not directed or weighted
-            Simple,
+            ShellIndexTypeSimple,
     // For a directed graph, calculates the (k,0)-core for non empty shells
-            InDegre,
+            ShellIndexTypeInDegree,
     // For a directed graph, calculates the (0,l)-core for non empty shells
-            OutDegre,
+            ShellIndexTypeOutDegree,
     // For a weighted graph, calculates the shell index binning by equal population (x axe)
-            WeightedEqualPopulation,
+            ShellIndexTypeWeightedEqualPopulation,
     // For a weighted graph, calculates the shell index binning by equal population (y axe)
-            WeightedEqualStrength
+            ShellIndexTypeWeightedEqualStrength
 };
 
 namespace graphpp {

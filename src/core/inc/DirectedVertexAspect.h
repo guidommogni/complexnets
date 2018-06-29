@@ -96,7 +96,7 @@ public:
 
     IdsIterator getNeighborsIdsConstIterator(ShellIndexType type)
     {
-        if (type == InDegre) {
+        if (type == ShellIndexTypeInDegree) {
             return getInNeighborsIds();
         } else {
             return getOutNeighborsIds();
@@ -105,7 +105,7 @@ public:
 
     double getDegree(ShellIndexType type)
     {
-        if (type == InDegre) {
+        if (type == ShellIndexTypeInDegree) {
             return inNeighbors.size();
         } else {
             return outNeighbors.size();

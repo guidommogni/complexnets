@@ -5,6 +5,8 @@
 #include "DirectedNearestNeighborsDegree.h"
 #include "GraphReader.h"
 #include "IGraphFactory.h"
+#include "IShellIndex.h"
+#include "ShellIndex.h"
 
 namespace graphpp
 {
@@ -30,12 +32,11 @@ public:
     {
         return new DirectedNearestNeighborsDegree<Graph, Vertex>();
     }
-    virtual IShellIndex<Graph, Vertex>* createShellIndex(Graph&)
-    {
-        // TODO Implement this
-        // return new DirectedShellIndex<Graph,Vertex>();
-        return nullptr;
+    virtual IShellIndex<Graph, Vertex>* createShellIndex(Graph& g, ShellIndexType type) {
+        return new ShellIndex<Graph, Vertex>(g, type);
+        
     }
+
     virtual IDegreeDistribution<Graph, Vertex>* createDegreeDistribution(Graph& g)
     {
         return new DirectedDegreeDistribution<Graph, Vertex>(g);
